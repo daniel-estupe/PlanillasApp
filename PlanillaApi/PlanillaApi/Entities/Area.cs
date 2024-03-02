@@ -7,5 +7,6 @@
         public int? ReportaAId { get; set; }
         public Area? ReportaA { get; set; }
         public ICollection<Area> AreasSubordinadas { get; set; } = new HashSet<Area>();
+        public ICollection<Puesto> Puestos { get; set; } = new HashSet<Puesto>();
     }
 }
