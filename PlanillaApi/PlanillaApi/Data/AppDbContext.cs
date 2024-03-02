@@ -1,6 +1,17 @@
-﻿namespace PlanillaApi.Data
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace PlanillaApi.Data
 {
-    public class AppDbContext
+    public class AppDbContext : DbContext
     {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+            
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
