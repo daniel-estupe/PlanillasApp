@@ -10,5 +10,6 @@
         public bool Habilitado { get; set; }
         public int PlazasHabilitadas { get; set; }
 
+        public ICollection<Contrato> Contratos { get; set; } = new HashSet<Contrato>();
     }
 }
