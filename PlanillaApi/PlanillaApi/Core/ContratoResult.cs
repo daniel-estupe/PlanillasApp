@@ -2,10 +2,10 @@
 
 namespace PlanillaApi.Core
 {
-    public class ContratoResult : ApiResult<ContratoResultType, Contrato>
+    public class ContratoResult : ApiResult<ContratoResultType, Empleado>
     {
-        public static ContratoResult CreadoConExisto(Contrato contrato) =>
-            new() { Codigo = ContratoResultType.Success, Mensaje = "Contrato creado con éxito.", Data = contrato };
+        public static ContratoResult CreadoConExisto(Empleado empleado) =>
+            new() { Codigo = ContratoResultType.Success, Mensaje = "Contrato creado con éxito.", Data = empleado };
         public static ContratoResult NoExistePlazaDisponible() =>
             new() { Codigo = ContratoResultType.NoExistePlazaDisponible, Mensaje = "Las plazas habilitadas para el puesto ya han sido ocupadas." };
 

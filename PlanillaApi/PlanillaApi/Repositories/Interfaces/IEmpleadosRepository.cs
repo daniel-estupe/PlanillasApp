@@ -6,7 +6,8 @@ namespace PlanillaApi.Repositories.Interfaces
     {
         Task<bool> ExistePlazaDisponible(int puestoId);
         Task<Puesto> ObtenerPuestoPorId(int puestoId); 
-        Task<Contrato> AgregarContrato(Contrato contrato);
+        void AgregarContrato(Contrato contrato);
         Task<IEnumerable<Empleado>> ObtenerEmpleados();
+        Task<Empleado> ObtenerEmpleado(int id);
     }
 }

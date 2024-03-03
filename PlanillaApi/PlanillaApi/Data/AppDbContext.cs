@@ -8,6 +8,7 @@ namespace PlanillaApi.Data
         public DbSet<Area> Areas { get; set; }
         public DbSet<Puesto> Puestos { get; set; }
         public DbSet<Empleado> Empleados { get; set; }
+        public DbSet<Contrato> Contratos { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlanillaApi.Core;
+using PlanillaApi.Entities;
 using PlanillaApi.Resources;
 using PlanillaApi.Services.Interfaces;
 
@@ -24,6 +26,22 @@ namespace PlanillaApi.Controllers
         {
             var data = await empleadosService.GetAll();
             return mapper.Map<IEnumerable<EmpleadoResource>>(data);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<EmpleadoResource> ObtenerEmpleado(int id)
+        {
+            var data = await empleadosService.GetById(id);
+            return mapper.Map<EmpleadoResource>(data);
+        }
+
+        [HttpPost]
+        public async Task<ApiResult<ContratoResultType, EmpleadoResource>> CrearEmpleado(NuevoEmpleado nuevoEmpleado)
+        {
+            var empleado = mapper.Map<Empleado>(nuevoEmpleado);
+            var result = await empleadosService.CrearContrato(empleado);
+            var contratoResource = mapper.Map<ApiResult<ContratoResultType, EmpleadoResource>>(result);
+            return contratoResource;
         }
     }
 }

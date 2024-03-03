@@ -14,14 +14,14 @@ namespace PlanillaApi.Repositories.ImplRepositories
             this._context = context;
         }
 
-        public Task<Contrato> AgregarContrato(Contrato contrato)
+        public void AgregarContrato(Contrato contrato)
         {
-            throw new NotImplementedException();
+            _context.Contratos.Add(contrato);
         }
 
-        public Task<bool> ExistePlazaDisponible(int puestoId)
+        public async Task<bool> ExistePlazaDisponible(int puestoId)
         {
-            throw new NotImplementedException();
+            return await _context.Puestos.Where(p => p.PlazasHabilitadas > 0 && p.PlazasHabilitadas > p.Contratos.Count(c => !c.FechaFinalizacion.HasValue)).AnyAsync();
         }
 
         public async Task<IEnumerable<Empleado>> ObtenerEmpleados()
@@ -33,9 +33,21 @@ namespace PlanillaApi.Repositories.ImplRepositories
                 .ToListAsync();
         }
 
-        public Task<Puesto> ObtenerPuestoPorId(int puestoId)
+        public async Task<Empleado> ObtenerEmpleado(int id)
         {
-            throw new NotImplementedException();
+            var resultado = await _context.Empleados
+                .Include(e => e.Contratos.Where(c => !c.FechaFinalizacion.HasValue))
+                .ThenInclude(c => c.Puesto)
+                .ThenInclude(p => p.Area)
+                .Where(e => e.Id == id)
+                .FirstOrDefaultAsync();
+            return resultado!;
+        }
+
+        public async Task<Puesto> ObtenerPuestoPorId(int puestoId)
+        {
+            var puesto = await _context.Puestos.FindAsync(puestoId);
+            return puesto!;
         }
     }
 }

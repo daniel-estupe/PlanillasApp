@@ -6,6 +6,7 @@ namespace PlanillaApi.Services.Interfaces
     public interface IEmpleadosService
     {
         Task<IEnumerable<Empleado>> GetAll();
-        Task<ContratoResult> CrearContrato(Contrato contrato);
+        Task<Empleado> GetById(int id);
+        Task<ContratoResult> CrearContrato(Empleado empleado);
     }
 }
