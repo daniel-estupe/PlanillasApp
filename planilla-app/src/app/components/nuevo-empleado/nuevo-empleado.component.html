@@ -1,0 +1,157 @@
+<div class="modal-header">
+    <h4 class="modal-title">Nuevo empleado</h4>
+    <button type="button" class="btn-close" aria-label="Cerrar" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body">
+    <div class="row my-2">
+        <div class="col">
+            <label for="">Área</label>
+            <select class="form-select" [(ngModel)]="areaSeleccionada" [ngClass]="{'is-invalid': false}">
+                <option *ngFor="let item of areas" [ngValue]="item">{{item.descripcion}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" *ngIf="!!areaSeleccionada">
+            <label for="">Puesto</label>
+            <select class="form-select" [(ngModel)]="puestoSeleccionado" [ngClass]="{'is-invalid': false}">
+                <option *ngFor="let item of areaSeleccionada.puestos" [ngValue]="item">{{item.descripcion}}</option>
+            </select>
+        </div>
+    </div>
+    <div *ngIf="!!puestoSeleccionado" [formGroup]="form">
+        <div class="row my-2">
+            <div class="col">
+                <label for="">Nombres</label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': frmEnviado && frm.nombres.invalid}"
+                    formControlName="nombres">
+                <div class="invalid-feedback">
+                    {{'Campo no válido.'}}
+                </div>
+            </div>
+            <div class="col">
+                <label for="">Apellidos</label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': frmEnviado && frm.apellidos.invalid}"
+                    formControlName="apellidos">
+                <div class="invalid-feedback">
+                    {{'Campo no válido.'}}
+                </div>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <label for="">Género</label>
+                <select class="form-select" formControlName="genero"
+                    [ngClass]="{'is-invalid': frmEnviado && frm.genero.invalid}">
+                    <option *ngFor="let item of generos" [ngValue]="item">{{item}}</option>
+                </select>
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+            <div class="col">
+                <label for="">Estado civil</label>
+                <select class="form-select" formControlName="estadoCivil"
+                    [ngClass]="{'is-invalid': frmEnviado && frm.estadoCivil.invalid}">
+                    <option *ngFor="let item of estadoCivilListado" [ngValue]="item">{{item}}</option>
+                </select>
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+            <div class="col">
+                <label for="">Fecha de nacimiento</label>
+                <input type="date" class="form-control" formControlName="fechaNacimiento" autocomplete="off"
+                    [ngClass]="{'is-invalid': frmEnviado && frm.fechaNacimiento.invalid}">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <label for="">CUI</label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': frmEnviado && frm.cui.invalid}"
+                    formControlName="cui">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+            <div class="col">
+                <label for="">NIT</label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': frmEnviado && frm.nit.invalid}"
+                    formControlName="nit">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+            <div class="col">
+                <label for="">Pasaporte</label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': frmEnviado && frm.pasaporte.invalid}"
+                    formControlName="pasaporte">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <label for="">No. de afiliación IGGS</label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': frmEnviado && frm.igss.invalid}"
+                    formControlName="igss">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+            <div class="col">
+                <label for="">No. de afiliación IRTRA</label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': frmEnviado && frm.irtra.invalid}"
+                    formControlName="irtra">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+            <div class="col">
+                <label for="">Fecha de emisión de carnet IRTRA</label>
+                <input type="date" class="form-control" formControlName="fechaEmisionIrtra" autocomplete="off"
+                    [ngClass]="{'is-invalid': frmEnviado && frm.fechaEmisionIrtra.invalid}">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row my-2">
+            <div class="col">
+                <label for="">Fecha de inicio de contrato</label>
+                <input type="date" class="form-control" formControlName="fechaInicioContrato" autocomplete="off"
+                    [ngClass]="{'is-invalid': frmEnviado && frm.fechaInicioContrato.invalid}">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+            <div class="col">
+                <label for="">Salario base</label>
+                <input type="number" class="form-control"
+                    [ngClass]="{'is-invalid': frmEnviado && frm.salarioBase.invalid}" formControlName="salarioBase">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+            <div class="col">
+                <label for="">Bonificación</label>
+                <input type="number" class="form-control"
+                    [ngClass]="{'is-invalid': frmEnviado && frm.bonificacion.invalid}" formControlName="bonificacion">
+                <div class="invalid-feedback">
+                    {{'Campo no válido o requerido.'}}
+                </div>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <button class="btn btn-secondary mx-1" (click)="activeModal.dismiss()">Cancelar</button>
+                <button class="btn btn-primary mx-1" (click)="guardarFormulario()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

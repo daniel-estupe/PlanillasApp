@@ -1,13 +1,37 @@
-import { Component } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { EmpleadosService } from './services/empleados.service';
+import { EmpleadoResource } from './models/empleado.model';
+import { CommonModule, NgFor, NgForOf } from '@angular/common';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NuevoEmpleadoComponent } from './components/nuevo-empleado/nuevo-empleado.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [CommonModule, RouterOutlet, HttpClientModule, NgbModule],
+  providers: [EmpleadosService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'planilla-app';
+  empleados: EmpleadoResource[] = [];
+
+  constructor(private empleadosService: EmpleadosService, private readonly modalService: NgbModal) {}
+
+  ngOnInit(): void {
+    this.empleadosService.obtenerEmpleados().subscribe((resp) => {
+      this.empleados = resp;
+    })
+  }
+
+  crearRegistroEmpleado() {
+    const ref = this.modalService.open(NuevoEmpleadoComponent, {
+      size: 'lg',
+      backdrop: 'static'
+    })
+
+  }
 }
