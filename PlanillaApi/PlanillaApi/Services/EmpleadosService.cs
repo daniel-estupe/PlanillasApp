@@ -33,6 +33,16 @@ namespace PlanillaApi.Services
             return ContratoResult.CreadoConExisto(empleado);
         }
 
+        public async Task<ContratoResult> EditarEmpleado(Empleado empleado)
+        {
+            var contrato = empleado.Contratos.First();
+            var puesto = await _empleadosRepository.ObtenerPuestoPorId(contrato.PuestoId);
+            if (contrato.SalarioBase > puesto.TechoSalarial) return ContratoResult.ExcedeTechoSalarial(puesto.TechoSalarial);
+            await _unitOfWork.CompleteAsync();
+            empleado = await _empleadosRepository.ObtenerEmpleado(empleado.Id);
+            return ContratoResult.GuardadoConExisto(empleado);
+        }
+
         public async Task<IEnumerable<Empleado>> GetAll()
         {
             return await _empleadosRepository.ObtenerEmpleados();

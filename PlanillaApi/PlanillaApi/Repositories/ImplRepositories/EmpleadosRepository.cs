@@ -26,17 +26,18 @@ namespace PlanillaApi.Repositories.ImplRepositories
 
         public async Task<IEnumerable<Empleado>> ObtenerEmpleados()
         {
-            return await _context.Empleados
-                .Include(e => e.Contratos.Where(c => !c.FechaFinalizacion.HasValue))
+            var respuesta = await _context.Empleados
+                .Include(e => e.Contratos.OrderBy(c => c.Id))
                 .ThenInclude(c => c.Puesto)
                 .ThenInclude(p => p.Area)
                 .ToListAsync();
+            return respuesta; 
         }
 
         public async Task<Empleado> ObtenerEmpleado(int id)
         {
             var resultado = await _context.Empleados
-                .Include(e => e.Contratos.Where(c => !c.FechaFinalizacion.HasValue))
+                .Include(e => e.Contratos.OrderBy(c => c.Id))
                 .ThenInclude(c => c.Puesto)
                 .ThenInclude(p => p.Area)
                 .Where(e => e.Id == id)

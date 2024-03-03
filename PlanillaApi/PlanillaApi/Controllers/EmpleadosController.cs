@@ -43,5 +43,15 @@ namespace PlanillaApi.Controllers
             var contratoResource = mapper.Map<ApiResult<ContratoResultType, EmpleadoResource>>(result);
             return contratoResource;
         }
+
+        [HttpPut("{id}")]
+        public async Task<ApiResult<ContratoResultType, EmpleadoResource>> EditarEmpleado(int id, EdicionEmpleado edicionEmpleado)
+        {
+            var empleado = await empleadosService.GetById(id);
+            empleado = mapper.Map(edicionEmpleado, empleado);
+            var result = await empleadosService.EditarEmpleado(empleado);
+            var contratoResource = mapper.Map<ApiResult<ContratoResultType, EmpleadoResource>>(result);
+            return contratoResource;
+        }
     }
 }

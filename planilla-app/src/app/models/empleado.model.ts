@@ -65,3 +65,26 @@ export enum ContratoResultType {
     NoExistePlazaDisponible = 2
 }
 
+export interface EdicionEmpleado {
+    id: number;
+    nombres: string;
+    apellidos: string;
+    genero: string;
+    estadoCivil: string;
+    fechaNacimiento: string;
+    cUI: string;
+    nIT: string;
+    pasaporte: string | null;
+    afiliacionIGSS: string | null;
+    afiliacionIRTRA: string | null;
+    fechaAfiliacionIRTRA: string | null;
+    contrato: EdicionContrato;
+}
+
+export interface EdicionContrato {
+    id: number;
+    fechaInicio: string;
+    fechaFinalizacion: string | null;
+    salarioBase: number;
+    bonificacion: number;
+}

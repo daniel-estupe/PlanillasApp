@@ -6,6 +6,8 @@ namespace PlanillaApi.Core
     {
         public static ContratoResult CreadoConExisto(Empleado empleado) =>
             new() { Codigo = ContratoResultType.Success, Mensaje = "Contrato creado con éxito.", Data = empleado };
+        public static ContratoResult GuardadoConExisto(Empleado empleado) =>
+            new() { Codigo = ContratoResultType.Success, Mensaje = "Registro guardado con éxito.", Data = empleado };
         public static ContratoResult NoExistePlazaDisponible() =>
             new() { Codigo = ContratoResultType.NoExistePlazaDisponible, Mensaje = "Las plazas habilitadas para el puesto ya han sido ocupadas." };
 

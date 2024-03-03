@@ -55,6 +55,7 @@ export class VerRegistroComponent {
           estadoCivil: item.estadoCivil,
           fechaEmisionIrtra: !!item.fechaAfiliacionIRTRA ? item.fechaAfiliacionIRTRA.split('T')[0] : null,
           fechaInicioContrato: contrato.fechaInicio.split('T')[0],
+          fechaFinContrato: !!contrato.fechaFinalizacion ? contrato.fechaFinalizacion.split('T')[0]: null,
           fechaNacimiento: item.fechaNacimiento.split('T')[0],
           genero: item.genero,
           igss: item.afiliacionIGSS,
@@ -79,22 +80,26 @@ export class VerRegistroComponent {
     if (this.form.invalid) return;
     let item = this.form.value;
     this.guardando = true;
-    this.empleadosService.crearEmpleado({
+    this.empleadosService.editarEmpleado({
+      id: this.empleado?.id!,
       afiliacionIGSS: item.igss!,
       afiliacionIRTRA: item.irtra!,
       apellidos: item.apellidos!,
-      bonificacion: item.bonificacion!,
       cUI: item.cui!,
       estadoCivil: item.estadoCivil!,
       fechaAfiliacionIRTRA: item.fechaEmisionIrtra!,
-      fechaInicioContrato: item.fechaInicioContrato!,
       fechaNacimiento: item.fechaNacimiento!,
       genero: item.genero!,
       nIT: item.nit!,
       nombres: item.nombres!,
       pasaporte: item.pasaporte!,
-      puestoId: this.empleado?.contratos[this.empleado?.contratos.length-1].puesto.id!,
-      salarioBase: item.salarioBase!,
+      contrato: {
+        bonificacion: item.bonificacion!,
+        salarioBase: item.salarioBase!,
+        fechaInicio: item.fechaInicioContrato!,
+        fechaFinalizacion: item.fechaFinContrato!,
+        id: this.empleado?.contratos[this.empleado?.contratos.length-1].id!
+      }
     }).pipe(
       catchError(() => {
         this.alertas.push({ type: 'danger', message: "Ha ocurrido un error al enviar la petición." });
@@ -124,15 +129,15 @@ export class VerRegistroComponent {
       apellidos: ['', [Validators.required, Validators.maxLength(50)]],
       genero: ['', Validators.required],
       estadoCivil: ['', Validators.required],
-      fechaNacimiento: [(null as string | null), Validators.required],
+      fechaNacimiento: [<string | null>null, Validators.required],
       cui: ['', [Validators.required, Validators.maxLength(13)]],
       nit: ['', [Validators.required, Validators.maxLength(13)]],
       pasaporte: ['', [Validators.maxLength(20)]],
       igss: ['', [Validators.maxLength(20)]],
       irtra: ['', [Validators.maxLength(20)]],
-      fechaEmisionIrtra: [(null as string | null)],
-      fechaInicioContrato: [(null as string | null), [Validators.required]],
-      fechaFinContrato: [(null as string | null)],
+      fechaEmisionIrtra: [<string | null>null],
+      fechaInicioContrato: [<string | null>null, [Validators.required]],
+      fechaFinContrato: [<string | null>null],
       salarioBase: [0, Validators.required],
       bonificacion: [0, Validators.required]
     })

@@ -44,5 +44,9 @@ export class AppComponent implements OnInit {
       backdrop: 'static'
     })
     ref.componentInstance.obtenerEmpleado(empleado.id);
+    ref.closed.subscribe((item: EmpleadoResource) => {
+      let index = this.empleados.findIndex(e => e.id === item.id);
+      this.empleados[index] = {...item};
+    })
   }
 }

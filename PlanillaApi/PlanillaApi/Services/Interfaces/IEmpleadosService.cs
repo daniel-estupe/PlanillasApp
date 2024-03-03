@@ -8,5 +8,6 @@ namespace PlanillaApi.Services.Interfaces
         Task<IEnumerable<Empleado>> GetAll();
         Task<Empleado> GetById(int id);
         Task<ContratoResult> CrearContrato(Empleado empleado);
+        Task<ContratoResult> EditarEmpleado(Empleado empleado);
     }
 }
