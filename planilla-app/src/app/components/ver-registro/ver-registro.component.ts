@@ -1,30 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AreaResource, ContratoResultType, PuestoResource } from '../../models/empleado.model';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CatalogosService } from '../../services/catalogos.service';
 import { EmpleadosService } from '../../services/empleados.service';
+import { AreaResource, ContratoResultType, EmpleadoResource, PuestoResource } from '../../models/empleado.model';
+import { Alert } from '../nuevo-empleado/nuevo-empleado.component';
 import { catchError, of, tap } from 'rxjs';
 
-export interface Alert {
-	type: string;
-	message: string;
-}
-
 @Component({
-  selector: 'app-nuevo-empleado',
+  selector: 'app-ver-registro',
   standalone: true,
   imports: [NgbModule, CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
   providers: [CatalogosService, EmpleadosService],
-  templateUrl: './nuevo-empleado.component.html',
-  styleUrl: './nuevo-empleado.component.scss'
+  templateUrl: './ver-registro.component.html',
+  styleUrl: './ver-registro.component.scss'
 })
-export class NuevoEmpleadoComponent implements OnInit {
+export class VerRegistroComponent {
   areas: AreaResource[] = [];
-  areaSeleccionada: AreaResource | null = null;
-  puestoSeleccionado: PuestoResource | null = null;
+  areaSeleccionada: string | null = null;
+  puestoSeleccionado: string | null = null;
+  empleado: EmpleadoResource | null = null;
   form = this.createForm();
   frmEnviado = false;
   generos: string[] = ['Masculino', 'Femenino', 'Otro'];
@@ -41,6 +38,35 @@ export class NuevoEmpleadoComponent implements OnInit {
   ngOnInit(): void {
     this.catalogosService.obtenerAreasConPuestosDisponibles().subscribe(resp => {
       this.areas = resp;
+    })
+  }
+
+  obtenerEmpleado(empleadoId: number) {
+    this.empleadosService.obtenerEmpleado(empleadoId).subscribe(item => {
+      this.empleado = item;
+      if (item.contratos.length > 0) {
+        let contrato = item.contratos[item.contratos.length-1];
+        this.areaSeleccionada = contrato.puesto.area.descripcion;
+        this.puestoSeleccionado = contrato.puesto.descripcion;
+        this.form.patchValue({
+          apellidos: item.apellidos,
+          bonificacion: contrato.bonificacion,
+          cui: item.cui,
+          estadoCivil: item.estadoCivil,
+          fechaEmisionIrtra: !!item.fechaAfiliacionIRTRA ? item.fechaAfiliacionIRTRA.split('T')[0] : null,
+          fechaInicioContrato: contrato.fechaInicio.split('T')[0],
+          fechaNacimiento: item.fechaNacimiento.split('T')[0],
+          genero: item.genero,
+          igss: item.afiliacionIGSS,
+          irtra: item.afiliacionIRTRA,
+          nit: item.nit,
+          nombres: item.nombres,
+          pasaporte: item.pasaporte,
+          salarioBase: contrato.salarioBase
+        })
+      }
+      
+
     })
   }
 
@@ -67,11 +93,11 @@ export class NuevoEmpleadoComponent implements OnInit {
       nIT: item.nit!,
       nombres: item.nombres!,
       pasaporte: item.pasaporte!,
-      puestoId: this.puestoSeleccionado?.id!,
+      puestoId: this.empleado?.contratos[this.empleado?.contratos.length-1].puesto.id!,
       salarioBase: item.salarioBase!,
     }).pipe(
       catchError(() => {
-        this.alertas.push({type: 'danger', message: "Ha ocurrido un error al enviar la petición."});
+        this.alertas.push({ type: 'danger', message: "Ha ocurrido un error al enviar la petición." });
         return of(null)
       }),
       tap(() => {
@@ -79,9 +105,9 @@ export class NuevoEmpleadoComponent implements OnInit {
       })
     ).subscribe((resp) => {
       if (resp === null) return;
-      
+
       if (resp.codigo != ContratoResultType.Success) {
-        this.alertas.push({type: 'danger', message: resp.mensaje});
+        this.alertas.push({ type: 'danger', message: resp.mensaje });
         return;
       }
       this.activeModal.close(resp.data);
@@ -98,14 +124,15 @@ export class NuevoEmpleadoComponent implements OnInit {
       apellidos: ['', [Validators.required, Validators.maxLength(50)]],
       genero: ['', Validators.required],
       estadoCivil: ['', Validators.required],
-      fechaNacimiento: [null, Validators.required],
+      fechaNacimiento: [(null as string | null), Validators.required],
       cui: ['', [Validators.required, Validators.maxLength(13)]],
       nit: ['', [Validators.required, Validators.maxLength(13)]],
       pasaporte: ['', [Validators.maxLength(20)]],
       igss: ['', [Validators.maxLength(20)]],
       irtra: ['', [Validators.maxLength(20)]],
-      fechaEmisionIrtra: [null],
-      fechaInicioContrato: [null, [Validators.required]],
+      fechaEmisionIrtra: [(null as string | null)],
+      fechaInicioContrato: [(null as string | null), [Validators.required]],
+      fechaFinContrato: [(null as string | null)],
       salarioBase: [0, Validators.required],
       bonificacion: [0, Validators.required]
     })

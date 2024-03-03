@@ -8,6 +8,7 @@
         <th scope="col">Empleado</th>
         <th scope="col">Puesto</th>
         <th scope="col">Área</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -16,6 +17,9 @@
         <td>{{empleado.nombres + " " + empleado.apellidos}}</td>
         <td>{{empleado.contratos.length > 0 ? empleado.contratos[0].puesto.descripcion : 'INACTIVO'}}</td>
         <td>{{empleado.contratos.length > 0 ? empleado.contratos[0].puesto.area.descripcion : 'INACTIVO'}}</td>
+        <td>
+          <button class="btn btn-primary" (click)="verRegistro(empleado)">Ver</button>
+        </td>
       </tr>
     </tbody>
   </table>

@@ -5,8 +5,8 @@ export interface EmpleadoResource {
     genero: string;
     estadoCivil: string;
     fechaNacimiento: string;
-    cUI: string;
-    nIT: string;
+    cui: string;
+    nit: string;
     pasaporte: string | null;
     afiliacionIGSS: string | null;
     afiliacionIRTRA: string | null;

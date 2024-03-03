@@ -6,6 +6,7 @@ import { EmpleadoResource } from './models/empleado.model';
 import { CommonModule, NgFor, NgForOf } from '@angular/common';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NuevoEmpleadoComponent } from './components/nuevo-empleado/nuevo-empleado.component';
+import { VerRegistroComponent } from './components/ver-registro/ver-registro.component';
 
 @Component({
   selector: 'app-root',
@@ -35,5 +36,13 @@ export class AppComponent implements OnInit {
     ref.closed.subscribe((empleado) => {
       this.empleados.push(empleado);
     })
+  }
+
+  verRegistro(empleado: EmpleadoResource) {
+    const ref = this.modalService.open(VerRegistroComponent, {
+      size: 'lg',
+      backdrop: 'static'
+    })
+    ref.componentInstance.obtenerEmpleado(empleado.id);
   }
 }
