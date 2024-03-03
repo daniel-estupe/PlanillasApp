@@ -29,5 +29,10 @@ namespace PlanillaApi.Services
 
             return ContratoResult.CreadoConExisto(contrato);
         }
+
+        public async Task<IEnumerable<Empleado>> GetAll()
+        {
+            return await _empleadosRepository.ObtenerEmpleados();
+        }
     }
 }
