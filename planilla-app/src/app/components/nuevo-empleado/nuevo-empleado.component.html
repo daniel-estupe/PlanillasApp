@@ -1,8 +1,10 @@
 <div class="modal-header">
     <h4 class="modal-title">Nuevo empleado</h4>
-    <button type="button" class="btn-close" aria-label="Cerrar" (click)="activeModal.dismiss()"></button>
+    <button type="button" class="btn-close" aria-label="Cerrar" [disabled]="guardando" (click)="activeModal.dismiss()"></button>
 </div>
 <div class="modal-body">
+    <ngb-alert *ngFor="let alert of alertas" [type]="alert.type" (closed)="closeAlert(alert)">{{ alert.message }}</ngb-alert>
+
     <div class="row my-2">
         <div class="col">
             <label for="">Área</label>
@@ -149,8 +151,8 @@
         </div>
         <div class="row my-2">
             <div class="col">
-                <button class="btn btn-secondary mx-1" (click)="activeModal.dismiss()">Cancelar</button>
-                <button class="btn btn-primary mx-1" (click)="guardarFormulario()">Guardar</button>
+                <button class="btn btn-secondary mx-1" [disabled]="guardando" (click)="activeModal.dismiss()">Cancelar</button>
+                <button class="btn btn-primary mx-1" [disabled]="guardando" (click)="guardarFormulario()">Guardar</button>
             </div>
         </div>
     </div>

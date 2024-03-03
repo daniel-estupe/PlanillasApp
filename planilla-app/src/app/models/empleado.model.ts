@@ -34,3 +34,34 @@ export interface AreaResource {
     descripcion: string;
     puestos: PuestoResource[];
 }
+
+export interface NuevoEmpleado {
+    nombres: string;
+    apellidos: string;
+    genero: string;
+    estadoCivil: string;
+    fechaNacimiento: string;
+    cUI: string;
+    nIT: string;
+    pasaporte: string | null;
+    afiliacionIGSS: string | null;
+    afiliacionIRTRA: string | null;
+    fechaAfiliacionIRTRA?: string;
+    fechaInicioContrato: string;
+    puestoId: number;
+    salarioBase: number;
+    bonificacion: number;
+}
+
+export interface ApiResult<T, R> {
+    codigo: T;
+    mensaje: string;
+    data: R | null;
+}
+
+export enum ContratoResultType {
+    Success = 0,
+    ExcedeTechoSalarial = 1,
+    NoExistePlazaDisponible = 2
+}
+

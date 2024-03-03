@@ -32,6 +32,8 @@ export class AppComponent implements OnInit {
       size: 'lg',
       backdrop: 'static'
     })
-
+    ref.closed.subscribe((empleado) => {
+      this.empleados.push(empleado);
+    })
   }
 }
